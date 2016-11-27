@@ -1,43 +1,32 @@
 {
     "version": "0",
     
-    "diagrams":
-        [
-            {
-                "name" : "main",
-                "line" : {
-                    "0" : {"condition" : "01 ", "next_id" : "1"},
-                    "1" : {"condition" : "01 ", "next_id" : "2"},
-                    "2" : {"condition" : "01 ", "next_id" : "3"},
-                    "3" : {"condition" : "0", "next_id" : "4"},
-                    "4" : {"condition" : "1", "next_id" : "5"}, 
-                    "5" : {"condition" : " ", "next_id" : "6"},
-                    "6" : {"condition" : "01 ", "next_id" : "3"},
-                    "7" : {"condition" : "01 ", "next_id" : "3"},
-                    "8" : {"condition" : "01 ", "next_id" : "7"}
-                },
-                "primitives" : {
-                    "0" : {"type" : "enter", "next" : ["l0"] },
-                    "1" : {"type" : "base", "mode" : "L", "next" : ["l1"], "previous" : ["l0"]},
-                    "2" : {"type" : "base", "mode" : "K", "next" : ["l2"], "previous" : ["l1"]},
-                    "3" : {"type" : "base", "mode" : "r", "next" : ["l3", "l4", "l5"], "previous" : ["l2", "l6", "l7"]},
-                    "4" : {"type" : "leter", "mode" : "1", "next" : ["l6"], "previous" : ["l3"]},
-                    "5" : {"type" : "leter", "mode" : "0", "next" : ["l7"], "previous" : ["l4"]},
-                    "6" : {"type" : "subdiagram", "name" : "plus_one", "next" : ["l8"], "previous" : ["l5"]},
-                    "7" : {"type" : "exit", "next" : null, "previous" : "l8"}
+    "diagrams":{
+        "main" : {
+            "lines" : {
+                "0" : {"condition" : "01 ", "next_id" : 1},
+                "1" : {"condition" : "01 ", "next_id" : 2},
+                "2" : {"condition" : "01 ", "next_id" : 3},
+                "3" : {"condition" : "0", "next_id" : 4},
+                "4" : {"condition" : "1", "next_id" : 5}, 
+                "5" : {"condition" : " ", "next_id" : 6},
+                "6" : {"condition" : "01 ", "next_id" : 3},
+                "7" : {"condition" : "01 ", "next_id" : 3},
+                "8" : {"condition" : "01 ", "next_id" : 7}
+            },
+            "elements" : {
+                "0" : {"type" : "enter", "next_id" : [0] },
+                "1" : {"type" : "base", "mode" : "L", "next_id" : [1]},
+                "2" : {"type" : "base", "mode" : "K", "next_id" : [2]},
+                "3" : {"type" : "base", "mode" : "r", "next_id" : [3, 4, 5]},
+                "4" : {"type" : "leter", "mode" : "1", "next_id" : [6]},
+                "5" : {"type" : "leter", "mode" : "0", "next_id" : [7]},
+                "6" : {"type" : "subdiagram", "name" : "plus_one", "next_id" : [8]},
+                "7" : {"type" : "exit"}
                 }
             },
-            {
-                "name" : "plus_one",
-                "line" : {
-                "l0" : {"01 " : "1"},
-                "..." : {"..." : "..."}
-                
-                },
-                "0" : {"type" : "enter", "next" : "l0"},
-                "1" : {"type" : "l", "next" : ["..."], "previous" : ["l0"]},
-                "n" : {"type" : "exit", "previous" : ["lk"] },
-                "n+1" : {"type" : "exit", "previous" : ["li"]}
-            }
-        ]
+        "plus_one" : {
+                "...":"..."
+        }
+    }
 }
