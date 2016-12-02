@@ -2,7 +2,8 @@ define([/* no dependencies yet */], function() {
     
     
     if ( !(window.File && window.FileReader && window.FileList && window.Blob) ){
-        alert("What the fuck with ur browser? UPDATE IT SONOFABITH!!!!");  //TODO: error handler and don`t humiliate user anymore...
+        //TODO: error handler and don`t humiliate user anymore...
+        alert("What the fuck with ur browser? UPDATE IT SONOFABITH!!!!");
     }
     
     var control = document.getElementById("userInputFile");
@@ -20,7 +21,8 @@ define([/* no dependencies yet */], function() {
         };
         
         reader.onerror = function(evt) {
-            alert("SOME ERROR WHILE READING JSON!!!");  //TODO: error handler
+            //TODO: error handler
+            alert("SOME ERROR WHILE READING JSON!!!");
         };
     });
 
