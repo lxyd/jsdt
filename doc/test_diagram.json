@@ -16,15 +16,15 @@
             },
             "elements" : {
                 "0" : {"type" : "enter", "next_id" : [0] },
-                "1" : {"type" : "base", "mode" : "L", "next_id" : [1]},
-                "2" : {"type" : "base", "mode" : "K", "next_id" : [2]},
-                "3" : {"type" : "base", "mode" : "r", "next_id" : [3, 4, 5]},
-                "4" : {"type" : "leter", "mode" : "1", "next_id" : [6]},
-                "5" : {"type" : "leter", "mode" : "0", "next_id" : [7]},
+                "1" : {"type" : "basic", "name" : "L", "next_id" : [1]},
+                "2" : {"type" : "basic", "name" : "K", "next_id" : [2]},
+                "3" : {"type" : "basic", "name" : "r", "next_id" : [3, 4, 5]},
+                "4" : {"type" : "leter", "letter" : "1", "next_id" : [6]},
+                "5" : {"type" : "leter", "letter" : "0", "next_id" : [7]},
                 "6" : {"type" : "subdiagram", "name" : "plus_one", "next_id" : [8]},
                 "7" : {"type" : "exit"}
-                }
-            },
+            }
+        },
         "plus_one" : {
                 "...":"..."
         }
