@@ -14,10 +14,25 @@ define(['bunit', 'assert', 'must-throw', 'src/parse', 'src/model'], function(bun
         },
     };
 
-    var d_trivial = {
+    var d_simple = {
         version: 0,
         diagrams: {
             main: {
+                elements: {
+                    "0": { type: "enter", next_line_ids: [0] },
+                    "1": { type: "basic", type: "r", next_line_ids: [1] },
+                    "2": { type: "letter", letter: "x", next_line_ids: [2] },
+                    "3": { type: "subdiagram", name: "trivial", next_line_ids: [3] },
+                    "4": { type: "exit" },
+                },
+                lines: {
+                    "0": { condition: "", next_el_id : 1 },
+                    "1": { condition: "", next_el_id : 2 },
+                    "2": { condition: "", next_el_id : 3 },
+                    "3": { condition: "", next_el_id : 4 },
+                },
+            },
+            trivial: {
                 elements: {
                     "0": { type: "enter", next_line_ids: [0] },
                     "1": { type: "exit" },
@@ -40,15 +55,104 @@ define(['bunit', 'assert', 'must-throw', 'src/parse', 'src/model'], function(bun
     
     bunit("Парсер парсит правильные типы данных", {
         setUp: function() {
-            return [parse(d_trivial)];
+            return [parse(d_simple)];
         },
-        diagramsAreArray: function(parsed) {
-            assert(parsed.diagrams).is('array');
+        diagramsAreObject: function(parsed) {
+            assert(parsed.diagrams).is('object');
+            assert(parsed.diagrams).not().equals(null);
         },
-        diagramHasRightClass: function(parsed) {
-            assert(parsed.diagrams[0]).isDefined();
-            assert(parsed.diagrams[0].constructor).equals(model.Diagram);
+        diagramHasRightType: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d).isDefined();
+            assert(d.constructor).equals(model.Diagram);
         },
-        // TODO : add oter data types
+        elementsAreObject: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.elements).is('object');
+            assert(d.elements).not().equals(null);
+        },
+        linesAreObject: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.lines).is('object');
+            assert(d.lines).not().equals(null);
+        },
+        lineHasRightType: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.lines[0].constructor).equals(model.Line);
+        },
+        enterHasRightType: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.elements[0].constructor).equals(model.Enter);
+        },
+        basicHasRightType: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.elements[1].constructor).equals(model.Basic);
+        },
+        letterHasRightType: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.elements[2].constructor).equals(model.Letter);
+        },
+        subdiagramHasRightType: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.elements[3].constructor).equals(model.Subdiagram);
+        },
+        exitHasRightType: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.elements[4].constructor).equals(model.Exit);
+        },
+    });
+    
+    bunit("При парсинге id и name прописываются внутрь объектов", {
+        setUp: function() {
+            return [parse(d_simple)];
+        },
+        diagramHasName: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.name).equals("main");
+        },
+        elementHasIntegerId: function(parsed) {
+            var d = parsed.diagrams["main"];
+            // Тут внимательно, "0" как строка не подойдёт:
+            // после парсинга поле id должно быть целым числом
+            assert(d.elements[0].id).equals(0);
+            assert(d.elements[1].id).equals(1);
+            assert(d.elements[2].id).equals(2);
+            assert(d.elements[3].id).equals(3);
+            assert(d.elements[4].id).equals(4);
+        },
+        lineHasIntegerId: function(parsed) {
+            var d = parsed.diagrams["main"];
+            // Тут внимательно, "0" как строка не подойдёт:
+            // после парсинга поле id должно быть целым числом
+            assert(d.lines[0].id).equals(0);
+            assert(d.lines[1].id).equals(1);
+            assert(d.lines[2].id).equals(2);
+            assert(d.lines[3].id).equals(3);
+        },
+    });
+    
+    bunit("При парсинге id заменяются на ссылки", {
+        setUp: function() {
+            return [parse(d_simple)];
+        },
+        elementNextLineIdsChangedToLinks: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.elements[0].next_line_ids).not().isDefined();
+            assert(d.elements[0].nextLines).is("object");
+            assert(d.elements[0].nextLines).not().equals(null);
+            assert(d.elements[0].nextLines[0]).equals(d.lines[0]);
+        },
+        lineNextElementIdChangedToLinks: function(parsed) {
+            var d = parsed.diagrams["main"];
+            assert(d.lines[0].next_element_id).not().isDefined();
+            assert(d.lines[0].nextElement).is("object");
+            assert(d.lines[0].nextElement).equals(d.elements[1]);
+        },
+        subdiagramNamesChangedToLinks: function(parsed) {
+            var d1 = parsed.diagrams["main"];
+            var d2 = parsed.diagrams["trivial"];
+            assert(d1.elements[3].name).not().isDefined();
+            assert(d1.elements[3].subdiagram).equals(d2);
+        },
     });
 });
