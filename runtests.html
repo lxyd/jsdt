@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <style>
+            .passed {
+                color: green;
+            }
+            .failed {
+                color: red;
+                padding-top: 0.5em;
+            }
+            .started {
+                padding-top: 0.5em;
+                font-weight: bold;
+            }
+            .finished {
+                border: 1px solid black;
+                margin-top: 0.5em;
+                padding-top: 0.5em;
+                padding-bottom: 0.5em;
+            }
+            #playback {
+                font-weight: bold;
+            }
+        </style>
+        <script src="lib/require.js"></script>
+        <script>
+            require.config({
+                baseUrl: 'lib',
+                paths: { 'src': '../src', 'tests': '../tests' },
+            });
+            requirejs(['bunit', 'tests/all-tests.js'], function(bunit) {
+                var r = bunit.runner();
+                r.defaultUI();
+                r.run({interval: 10000});
+            });
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
