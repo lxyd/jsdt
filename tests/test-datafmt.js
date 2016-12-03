@@ -1,4 +1,7 @@
-define(['bunit', 'assert', 'must-throw', 'src/parse', 'src/model'], function(bunit, assert, mustThrow, parse, model) {
+define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(bunit, assert, mustThrow, datafmt, model) {
+    var parse = datafmt.parse,
+        serialize = datafmt.serialize;
+
     var d_no_main = {
         version: 0,
         diagrams: { },
@@ -47,9 +50,9 @@ define(['bunit', 'assert', 'must-throw', 'src/parse', 'src/model'], function(bun
     bunit("Разные тесты парсера", {
         throwIfNoMain: mustThrow(function() {
             parse(d_no_main);
-        }),//, "Парсер должен падать, если нет диаграммы main"),
-        versionIsPreserved: function(parsed) {
-            assert(parsed.version).equals(d_trivial.version);
+        }, "Парсер должен падать, если нет диаграммы main"),
+        versionMustNotBePreserved: function(parsed) {
+            assert(parsed.version).not().isDefined();
         },
     });
     
@@ -155,4 +158,7 @@ define(['bunit', 'assert', 'must-throw', 'src/parse', 'src/model'], function(bun
             assert(d1.elements[3].subdiagram).equals(d2);
         },
     });
+    
+    
+    // TODO : test serialize function
 });

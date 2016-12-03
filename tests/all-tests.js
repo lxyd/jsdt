@@ -1,4 +1,4 @@
 define([
-    './test-parse',
+    './test-datafmt',
     // TODO : add other test suites
 ]);
