@@ -12,8 +12,23 @@ define(function() {
         }
         
         purgeLine() {
-            // TODO: impliment
-            // ALLAHU AKBAR!!!s
+            
+            // To delete an object we have delete every link on it
+            // TODO: delete other links
+            
+            for (var line in this.nextElement.prevLines) {
+                if (line.id === this.id) {
+                    delete line;
+                    break;
+                }
+            }
+            
+            for (var line in this.prevElement.nextLines) {
+                if (line.id === this.id) {
+                    delete line;
+                    break;
+                }
+            }
         }
     };
     
