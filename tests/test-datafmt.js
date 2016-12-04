@@ -23,7 +23,7 @@ define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(b
             main: {
                 elements: {
                     "0": { type: "enter", next_line_ids: [0] },
-                    "1": { type: "basic", type: "r", next_line_ids: [1] },
+                    "1": { type: "basic", name: "r", next_line_ids: [1] },
                     "2": { type: "letter", letter: "x", next_line_ids: [2] },
                     "3": { type: "subdiagram", name: "trivial", next_line_ids: [3] },
                     "4": { type: "exit" },
@@ -85,23 +85,23 @@ define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(b
         },
         enterHasRightType: function(parsed) {
             var d = parsed.diagrams["main"];
-            assert(d.elements[0].constructor).equals(model.Enter);
+            assert(d.elements[0].constructor).equals(model.EnterElement);
         },
         basicHasRightType: function(parsed) {
             var d = parsed.diagrams["main"];
-            assert(d.elements[1].constructor).equals(model.Basic);
+            assert(d.elements[1].constructor).equals(model.BasicCallElement);
         },
         letterHasRightType: function(parsed) {
             var d = parsed.diagrams["main"];
-            assert(d.elements[2].constructor).equals(model.Letter);
+            assert(d.elements[2].constructor).equals(model.LetterCallElement);
         },
         subdiagramHasRightType: function(parsed) {
             var d = parsed.diagrams["main"];
-            assert(d.elements[3].constructor).equals(model.Subdiagram);
+            assert(d.elements[3].constructor).equals(model.SubdiagramCallElement);
         },
         exitHasRightType: function(parsed) {
             var d = parsed.diagrams["main"];
-            assert(d.elements[4].constructor).equals(model.Exit);
+            assert(d.elements[4].constructor).equals(model.ExitElement);
         },
     });
     

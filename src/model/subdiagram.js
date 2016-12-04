@@ -1,7 +1,8 @@
 define(['./call'], function(Call) {
-    class Subdiagram extends Call {
+    class SubdiagramCallElement extends Call {
         constructor() {
-            // TODO
+            super();
+            this.subdiagram = null; // not this.name becouse of tests
         }
     };
     

@@ -3,15 +3,15 @@
  */
 define(function(require) {
     return {
-        Package    : require('./model/package'),
-        Diagram    : require('./model/diagram'),
-        Line       : require('./model/line'),
-        Element    : require('./model/element'),
-        Enter      : require('./model/enter'),
-        Exit       : require('./model/exit'),
-        Call       : require('./model/call'),
-        Basic      : require('./model/basic'),
-        Letter     : require('./model/letter'),
-        Subdiagram : require('./model/subdiagram'),
+        Package               : require('./model/package'),
+        Diagram               : require('./model/diagram'),
+        Line                  : require('./model/line'),
+        Element               : require('./model/element'),
+        EnterElement          : require('./model/enter'),
+        ExitElement           : require('./model/exit'),
+        CallElement           : require('./model/call'),
+        BasicCallElement      : require('./model/basic'),
+        LetterCallElement     : require('./model/letter'),
+        SubdiagramCallElement : require('./model/subdiagram'),
     }
 });

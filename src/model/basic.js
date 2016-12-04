@@ -1,7 +1,7 @@
 define(['./call'], function(Call) {
-    class Basic extends Call {
+    class BasicCallElement extends Call {
         constructor() {
-            // TODO
+            this.name = null;
         }
     };
     

@@ -1,7 +1,7 @@
 define(['./element'], function(Element) {
-    class Enter extends Element {
+    class EnterElement extends Element {
         constructor() {
-            // TODO
+            super();
         }
     };
     

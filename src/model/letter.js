@@ -1,7 +1,7 @@
 define(['./call'], function(Call) {
-    class Letter extends Call {
+    class LetterCallElement extends Call {
         constructor() {
-            // TODO
+            this.letter = "";
         }
     };
     

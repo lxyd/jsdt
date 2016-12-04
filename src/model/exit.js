@@ -1,7 +1,7 @@
 define(['./element'], function(Element) {
-    class Exit extends Element {
+    class ExitElement extends Element {
         constructor() {
-            // TODO
+            super();
         }
     };
     
