@@ -5,5 +5,5 @@ define(['./element'], function(Element) {
         }
     };
     
-    return Enter;
+    return EnterElement;
 })

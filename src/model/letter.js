@@ -5,5 +5,5 @@ define(['./call'], function(Call) {
         }
     };
     
-    return Letter;
+    return LetterCallElement;
 })

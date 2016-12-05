@@ -6,5 +6,5 @@ define(['./call'], function(Call) {
         }
     };
     
-    return Subdiagram;
+    return SubdiagramCallElement;
 })
