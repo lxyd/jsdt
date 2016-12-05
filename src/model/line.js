@@ -16,16 +16,17 @@ define(function() {
             // To delete an object we have delete every link on it
             // TODO: delete other links
             
-            for (var line in this.nextElement.prevLines) {
-                if (line.id === this.id) {
-                    delete line;
+            
+            for (var i = 0; i < this.nextElement.prevLines.length; ++i) {
+                if (this.nextElement.prevLines[i] === this) {
+                    this.nextElement.prevLines.splice(i, 1);
                     break;
                 }
             }
             
-            for (var line in this.prevElement.nextLines) {
-                if (line.id === this.id) {
-                    delete line;
+            for (var i = 0; i < this.prevElement.nextLines.length; ++i) {
+                if (this.prevElement.nextLines[i] === this) {
+                    this.prevElement.nextLines.splice(i, 1);
                     break;
                 }
             }
