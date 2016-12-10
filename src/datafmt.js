@@ -20,7 +20,7 @@ define(['./model'], function (model) {
                 case "enter":
                     projectPackage.diagrams[diagram].elements[elementId] =
                             new model.EnterElement();
-                    createElement(projectPackage);
+                    createElement(projectPackage, elementId);
                     return projectPackage.diagrams[diagram].elements[elementId];
                 case "exit":
                     projectPackage.diagrams[diagram].elements[elementId] =
@@ -30,17 +30,17 @@ define(['./model'], function (model) {
                 case "basic":
                     projectPackage.diagrams[diagram].elements[elementId] =
                             new model.BasicCallElement();
-                    createBasic(projectPackage);
+                    createBasic(projectPackage, elementId);
                     return projectPackage.diagrams[diagram].elements[elementId];
                 case "letter":
                     projectPackage.diagrams[diagram].elements[elementId] =
                             new model.LetterCallElement();
-                    createLetter(projectPackage);
+                    createLetter(projectPackage, elementId);
                     return projectPackage.diagrams[diagram].elements[elementId];
                 case "subdiagram":
                     projectPackage.diagrams[diagram].elements[elementId] =
                             new model.SubdiagramCallElement();
-                    createSubdiagram(projectPackage);
+                    createSubdiagram(projectPackage, elementId);
                     return projectPackage.diagrams[diagram].elements[elementId];
                 default:
                     // It`s immposible, but let it be
@@ -62,7 +62,7 @@ define(['./model'], function (model) {
          * @function createElement
          * @argument {Object} projectPackage
          */
-        function createElement(projectPackage) {
+        function createElement(projectPackage, elementId) {
             /** Short name for projectPackage.diagrams[diagram].elements */
             var ElementsParsed = projectPackage.diagrams[diagram].elements;
 
@@ -80,17 +80,18 @@ define(['./model'], function (model) {
                 /** Short name for obj.diagrams[diagram].elements.elementId.next_line_ids*/
                 var nextLineIdsJSON = elementJSON.next_line_ids;
 
-                for (var lineId in nextLineIdsJSON) {
-                    if (LinesParsed[lineId]) {
-                        //throw new Error("LinesParsed[lineId] exists");
-                        continue;
+                for (var lineIdStr in nextLineIdsJSON) {
+                    if (LinesParsed[nextLineIdsJSON[lineIdStr]]) {
+                        throw new Error("LinesParsed[lineId] exists");
+                        //continue;
                     }
+                    var lineId = parseInt(lineIdStr);
                     LinesParsed[lineId] = new model.Line();
                     LinesParsed[lineId].prevElement = ElementsParsed[elementId];
                     ElementsParsed[elementId].nextLines.push(LinesParsed[lineId]);
 
                     /** Short name for obj.diagrams[diagram].lines[lineId] */
-                    var lineJSON = obj.diagrams[diagram].lines[lineId];
+                    var lineJSON = obj.diagrams[diagram].lines[lineIdStr];
 
                     LinesParsed[lineId].id = parseInt(lineId);
                     if (isNaN(LinesParsed[lineId].id)) {
@@ -132,8 +133,8 @@ define(['./model'], function (model) {
          * @argument {Object} projectPackage 
          * @function createBasik
          */
-        function createBasic(projectPackage) {
-            createElement(projectPackage);
+        function createBasic(projectPackage, elementId) {
+            createElement(projectPackage, elementId);
 
             var ElementsParsed = projectPackage.diagrams[diagram].elements;
             // TODO: There must be link to basic element, or smth like that
@@ -146,8 +147,8 @@ define(['./model'], function (model) {
          * @argument {Object} projectPackage 
          * @function createLetter
          */
-        function createLetter(projectPackage) {
-            createElement(projectPackage);
+        function createLetter(projectPackage, elementId) {
+            createElement(projectPackage, elementId);
 
             var ElementsParsed = projectPackage.diagrams[diagram].elements;
 
@@ -161,8 +162,8 @@ define(['./model'], function (model) {
          * @argument {Object} projectPackage 
          * @function createSubdiagram
          */
-        function createSubdiagram(projectPackage) {
-            createElement(projectPackage);
+        function createSubdiagram(projectPackage, elementId) {
+            createElement(projectPackage, elementId);
 
             var subdiagramLink = projectPackage.diagrams[diagram].elements[elementId].subdiagram;
             var subDiagName = obj.diagrams[diagram].elements[elementId].name;
