@@ -208,7 +208,6 @@ define(['./model'], function (model) {
 
         var projectPackage = new model.Package();
 
-        projectPackage.version = undefined;
         
 
         /** Here will be saved subdiagrams to add links on objects later.
