@@ -62,7 +62,11 @@ define(['./model'], function (model) {
          * @function createElement
          * @argument {Object} projectPackage
          */
-        function createElement(projectPackage, elementId) {
+        function createElement(projectPackage, elementIdStr) {
+            elementId = parseInt(elementIdStr);
+            if (isNaN(elementId)) {
+                throw new Error("elementId is NaN");
+            }
             /** Short name for projectPackage.diagrams[diagram].elements */
             var ElementsParsed = projectPackage.diagrams[diagram].elements;
 
@@ -70,9 +74,9 @@ define(['./model'], function (model) {
             var LinesParsed = projectPackage.diagrams[diagram].lines;
 
             /** Short name for obj.diagrams[diagram].elements[elementId]*/
-            var elementJSON = obj.diagrams[diagram].elements[elementId];
+            var elementJSON = obj.diagrams[diagram].elements[elementIdStr];
 
-            ElementsParsed[elementId].id = parseInt(elementId);
+            ElementsParsed[elementId].id = elementId;
             if (isNaN(ElementsParsed[elementId].id)) {
                 throw new Error("ElementsParsed[elementId].id is Nan");
             }
@@ -85,13 +89,13 @@ define(['./model'], function (model) {
                         throw new Error("LinesParsed[lineId] exists");
                         //continue;
                     }
-                    var lineId = parseInt(lineIdStr);
+                    var lineId = parseInt(nextLineIdsJSON[lineIdStr]);
                     LinesParsed[lineId] = new model.Line();
                     LinesParsed[lineId].prevElement = ElementsParsed[elementId];
                     ElementsParsed[elementId].nextLines.push(LinesParsed[lineId]);
 
                     /** Short name for obj.diagrams[diagram].lines[lineId] */
-                    var lineJSON = obj.diagrams[diagram].lines[lineIdStr];
+                    var lineJSON = obj.diagrams[diagram].lines[lineId.toString()];
 
                     LinesParsed[lineId].id = parseInt(lineId);
                     if (isNaN(LinesParsed[lineId].id)) {
