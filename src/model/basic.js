@@ -1,6 +1,7 @@
-define(['./call'], function(Call) {
-    class BasicCallElement extends Call {
+define(['./call'], function(CallElement) {
+    class BasicCallElement extends CallElement {
         constructor() {
+            super();
             this.name = null;
         }
     };

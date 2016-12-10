@@ -1,9 +1,9 @@
 define(['./element'], function(Element) {
-    class Call extends Element {
+    class CallElement extends Element {
         constructor() {
             super();
         }
     };
     
-    return Call;
+    return CallElement;
 })
