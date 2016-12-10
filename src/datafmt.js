@@ -24,8 +24,8 @@ define(['./model'], function (model) {
                     return projectPackage.diagrams[diagram].elements[elementId];
                 case "exit":
                     projectPackage.diagrams[diagram].elements[elementId] =
-                            new model.ExitElement;
-                    createExit(projectPackage);
+                            new model.ExitElement();
+                    createExit(projectPackage, elementId);
                     return projectPackage.diagrams[diagram].elements[elementId];
                 case "basic":
                     projectPackage.diagrams[diagram].elements[elementId] =
@@ -50,7 +50,6 @@ define(['./model'], function (model) {
                     // Row! Row!
                     // Fight The Power!
                     throw new Error("Anknown type of element");
-                    break;
             }
         }
 
@@ -61,6 +60,7 @@ define(['./model'], function (model) {
          * Will fill id, nextLines, create Lines, create next Elements and call pickType()
          * @function createElement
          * @argument {Object} projectPackage
+         * @argument {String} elementIdStr Smth for parseInt()
          */
         function createElement(projectPackage, elementIdStr) {
             elementId = parseInt(elementIdStr);
@@ -123,23 +123,31 @@ define(['./model'], function (model) {
          * Exit dotsn`t have next line so it has it`s own function to avoid errors
          * @function createExit
          * @argument {Object} projectPackage 
+         * @argument {String} elementIdStr Smth for parseInt() 
          */
-        function createExit(projectPackage) {
-            var ElementsParsed = projectPackage.diagrams[diagram].elements;
-            ElementsParsed[elementId].id = parseInt(elementId);
-            if (isNaN(ElementsParsed[elementId].id)) {
-                throw new Error("ElementsParsed[elementId].id is Nan");
+        function createExit(projectPackage, elementIdStr) {
+            var elementId = parseInt(elementIdStr);
+            if (isNaN(elementId)) {
+                throw new Error("elementId is NaN");
             }
+
+            var ElementsParsed = projectPackage.diagrams[diagram].elements;
+            ElementsParsed[elementId].id = elementId;
         }
 
         /**
          * Call createElement() and parse BasikCallElement filds
          * @argument {Object} projectPackage 
          * @function createBasik
+         * @argument {Object} elementIdStr Smth for parseInt()
          */
-        function createBasic(projectPackage, elementId) {
-            createElement(projectPackage, elementId);
+        function createBasic(projectPackage, elementIdStr) {
+            createElement(projectPackage, elementIdStr);
 
+            var elementId = parseInt(elementIdStr);
+            if (isNaN(elementId)) {
+                throw new Error("elementId is Nan");
+            }
             var ElementsParsed = projectPackage.diagrams[diagram].elements;
             // TODO: There must be link to basic element, or smth like that
             ElementsParsed[elementId].name =
@@ -150,14 +158,20 @@ define(['./model'], function (model) {
          * Call createElement() and parse LetterCallElements filds
          * @argument {Object} projectPackage 
          * @function createLetter
+         * @argument {Object} elementIdStr Smth for parseInt()
          */
-        function createLetter(projectPackage, elementId) {
-            createElement(projectPackage, elementId);
+        function createLetter(projectPackage, elementIdStr) {
+            createElement(projectPackage, elementIdStr);
 
             var ElementsParsed = projectPackage.diagrams[diagram].elements;
 
+            var elementId = parseInt(elementIdStr);
+            if (isNaN(elementId)) {
+                throw new Error("elementId is Nan");
+            }
+
             ElementsParsed[elementId].letter =
-                    obj.diagrams[diagram].elements[elementId].letter;
+                    obj.diagrams[diagram].elements[elementIdStr].letter;
         }
 
 
@@ -165,14 +179,23 @@ define(['./model'], function (model) {
          * Call createElement() and parse SubdiagramCallElement filds
          * @argument {Object} projectPackage 
          * @function createSubdiagram
+         * @argument {Object} elementIdStr Smth for parseInt()
          */
-        function createSubdiagram(projectPackage, elementId) {
-            createElement(projectPackage, elementId);
+        function createSubdiagram(projectPackage, elementIdStr) {
+            createElement(projectPackage, elementIdStr);
 
-            var subdiagramLink = projectPackage.diagrams[diagram].elements[elementId].subdiagram;
-            var subDiagName = obj.diagrams[diagram].elements[elementId].name;
+            var elementId = parseInt(elementIdStr);
+            if (isNaN(elementId)) {
+                throw new Error("elementId is Nan");
+            }
 
-            subdiagramsObj[subdiagramLink] = subDiagName;
+            var elementLink = projectPackage.diagrams[diagram].elements[elementId];
+            var subdiagramName = obj.diagrams[diagram].elements[elementIdStr].name;
+            
+            // Thats a little dirty hack, but it`s more readeble and easy to use
+            // than other ways. elementLink.name will be deleted at the ann of parse()
+            elementLink.name = subdiagramName;
+            subdiagramsArray.push(elementLink);
 
         }
 
@@ -185,14 +208,17 @@ define(['./model'], function (model) {
 
         var projectPackage = new model.Package();
 
+        projectPackage.version = undefined;
+        
+
         /** Here will be saved subdiagrams to add links on objects later.
-         * Link on elements[elementId].subdiagram : diagram name as string.
          * @type Object 
          */
-        var subdiagramsObj = {};
+        var subdiagramsArray = [];
 
         for (var diagram in obj.diagrams) {
             projectPackage.diagrams[diagram] = new model.Diagram();
+            projectPackage.diagrams[diagram].name = diagram;
 
             // Element without lines can`t be found recursively
             for (var elementId in obj.diagrams[diagram].elements) {
@@ -200,10 +226,15 @@ define(['./model'], function (model) {
             }
         }
 
-        for (var linkOnSub in subdiagramsObj) {
-            linkOnSub = projectPackage.diagrams[subdiagramsObj[linkOnSub]];
+        for (var linkOnSub in subdiagramsArray) {
+            //subdiagramsArray[linkOnSub] = projectPackage.diagrams[subdiagramsArray[linkOnSub]];
+            var diagramName = subdiagramsArray[linkOnSub].name;
+            subdiagramsArray[linkOnSub].subdiagram = projectPackage.diagrams[diagramName];
+            
+            // name isn`t declared in madel/subdiagram, that is my hack. Look in createSubdiagram()
+            delete subdiagramsArray[linkOnSub].name;
         }
-        
+
         return projectPackage;
     }
 

@@ -3,6 +3,7 @@ define(['./element', './line'], function(Element, Line) {
         constructor() {
             this.elements = {};
             this.lines = {};
+            this.name = "";
         }
     };
     

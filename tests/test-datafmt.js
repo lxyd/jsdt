@@ -60,6 +60,9 @@ define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(b
         setUp: function() {
             return [parse(d_simple)];
         },
+        versionMustNotBePreserved: function(parsed) {
+            assert(parsed.version).not().isDefined();
+        },
         diagramsAreObject: function(parsed) {
             assert(parsed.diagrams).is('object');
             assert(parsed.diagrams).not().equals(null);
@@ -142,14 +145,14 @@ define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(b
             var d = parsed.diagrams["main"];
             
             assert(d.elements[0].next_line_ids).not().isDefined();
-            assert(d.elements[0].nextLines).is("object");
+            assert(d.elements[0].nextLines).is("array");
             assert(d.elements[0].nextLines).not().equals(null);
             assert(d.elements[0].nextLines[0]).equals(d.lines[0]);
         },
         elementHasPrevLines: function(parsed) {
             var d = parsed.diagrams["main"];
             
-            assert(d.elements[1].prevLines).is("object");
+            assert(d.elements[1].prevLines).is("array");
             assert(d.elements[1].prevLines).not().equals(null);
             assert(d.elements[1].prevLines[0]).equals(d.lines[0]);
         },
