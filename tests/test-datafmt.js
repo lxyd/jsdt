@@ -51,7 +51,8 @@ define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(b
         throwIfNoMain: mustThrow(function() {
             parse(d_no_main);
         }, "Парсер должен падать, если нет диаграммы main"),
-        versionMustNotBePreserved: function(parsed) {
+        versionMustNotBePreserved: function() {
+            var parsed = parse(d_simple);
             assert(parsed.version).not().isDefined();
         },
     });
@@ -59,9 +60,6 @@ define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(b
     bunit("Парсер парсит правильные типы данных", {
         setUp: function() {
             return [parse(d_simple)];
-        },
-        versionMustNotBePreserved: function(parsed) {
-            assert(parsed.version).not().isDefined();
         },
         diagramsAreObject: function(parsed) {
             assert(parsed.diagrams).is('object');
