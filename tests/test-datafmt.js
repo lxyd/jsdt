@@ -207,7 +207,7 @@ define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(b
         enterHasRightType: function(obj) {
             var d = obj.diagrams.main;
             assert(d.elements["0"]).isDefined();
-            assert(d.elements[0].constructor).not().equals(model.EnterElement);
+            assert(d.elements["0"].constructor).not().equals(model.EnterElement);
         },
         basicHasRightType: function(obj) {
             var d = obj.diagrams["main"];

@@ -1,4 +1,5 @@
 define(['./model'], function(model) {
+    "use strict";
     class App {
         constructor() {
         }

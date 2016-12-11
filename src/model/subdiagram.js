@@ -1,4 +1,5 @@
 define(['./call'], function(CallElement) {
+    "use strict";
     class SubdiagramCallElement extends CallElement {
         constructor() {
             super();

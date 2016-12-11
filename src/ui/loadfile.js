@@ -1,4 +1,5 @@
 define(['../parse'], function(parse) {
+    "use strict";
     class OpenFileControl {
         constructor(engine, inputFile) {
             if (!(window.File && window.FileReader && window.FileList && window.Blob)) {

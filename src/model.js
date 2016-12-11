@@ -2,6 +2,7 @@
  * Модуль, объединяющий все классы модели для упрощения импорта
  */
 define(function(require) {
+    "use strict";
     return {
         Package               : require('./model/package'),
         Diagram               : require('./model/diagram'),
