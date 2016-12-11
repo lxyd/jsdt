@@ -16,6 +16,7 @@ define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(b
             },
         },
     };
+    
 
     var d_simple = {
         version: 0,
@@ -46,6 +47,7 @@ define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(b
             },
         },
     };
+    
 
     bunit("Разные тесты парсера", {
         throwIfNoMain: mustThrow(function() {
@@ -173,6 +175,46 @@ define(['bunit', 'assert', 'must-throw', 'src/datafmt', 'src/model'], function(b
             assert(d1.elements[3].name).not().isDefined();
             assert(d1.elements[3].subdiagram).equals(d2);
         },
+    });
+    
+    
+    bunit("Разные тесты сериализатора", {
+        NoMain: mustThrow(function() {
+            var p_no_main = new Package();
+            serialize(p_no_main);
+        }, "Сериализатор должен падать, если нет main"),
+    });
+    
+    
+    bunit("Сериализатор формирует правильный объект", {
+        setUp: function () {
+            var parsed_d_simple = parse(d_simple);
+            return [serialize(parsed_d_simple)];
+        },
+        VersionAdded: function (obj) {
+            assert(obj.version).isDefined();
+        },
+        diagramHasRightType: function(obj) {
+            var d = obj.diagrams.main;
+            assert(d).isDefined();
+            assert(d.constructor).not().equals(model.Diagram);
+        },
+        lineHasRightType: function(obj) {
+            var d = obj.diagrams.main;
+            assert(d.lines["0"]).isDefined();
+            assert(d.lines["0"].constructor).not().equals(model.Line);
+        },
+        enterHasRightType: function(obj) {
+            var d = obj.diagrams.main;
+            assert(d.elements["0"]).isDefined();
+            assert(d.elements[0].constructor).not().equals(model.EnterElement);
+        },
+        basicHasRightType: function(obj) {
+            var d = obj.diagrams["main"];
+            assert(d.elements["1"]).isDefined();
+            assert(d.elements["1"].constructor).not().equals(model.BasicCallElement);
+        }
+        
     });
     
     
