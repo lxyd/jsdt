@@ -15,7 +15,7 @@ define(['./model'], function (model) {
          */
         pickType(projectPackage, elementId) {
             if (projectPackage.diagrams[this.diagram].elements[elementId]) {
-                return null;
+                return projectPackage.diagrams[this.diagram].elements[elementId];
             }
 
             switch (this.obj.diagrams[this.diagram].elements[elementId].type) {
